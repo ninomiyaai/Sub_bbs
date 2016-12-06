@@ -6,11 +6,11 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>ユーザー登録</title>
+	<title>ユーザー新規登録画面</title>
 	<link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h3>ユーザー登録</h3>
+<h3>ユーザー新規登録</h3>
 <div class="main-contents">
 <c:if test="${ not empty errorMessages }">
 	<div class="errorMessages">

@@ -9,6 +9,7 @@ import java.util.List;
 import bbs.beans.Message;
 import bbs.beans.UserMessage;
 import bbs.dao.MessageDao;
+import bbs.dao.UserMessageDao;
 
 public class MessageService {
 

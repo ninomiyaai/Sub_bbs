@@ -45,7 +45,7 @@ public class UserDao {
 			ps.setString(3, user.getName());
 			ps.setInt(4, user.getBranch_id());
 			ps.setInt(5, user.getPosition_id());
-//			ps.setBoolean(6, user.getDeleted_id());
+			ps.setBoolean(6, user.getDeleted());
 
 			ps.executeUpdate();
 			System.out.println();

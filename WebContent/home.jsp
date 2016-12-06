@@ -15,12 +15,37 @@
 <div class="main-contents">
 
 <div class="header">
-
-		<a href="">投稿する</a>
-		<a href="">ユーザー管理</a>
-		<a href="login">ログアウト</a>
-
+	<a href="newMessage">投稿する</a>
+	<a href="">ユーザー管理</a>
+	<a href="login">ログアウト</a>
 </div>
+
+errer
+
+
+<div class="messages">
+	<c:forEach items="${messages}" var="message">
+				<div class="title"><c:out value="${message.title}" /></div>
+				<div class="text"><c:out value="${message.text}" /></div>
+				<div class="name"><c:out value="${message.name}" /></div>
+				<div class="category"><c:out value="${message.category}" /></div>
+				<div class="created_at"><fmt:formatDate value="${message.created_at}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+				<h5>-----------------------</h5>
+			</div>
+	</c:forEach>
 </div>
+
+<div class="comment">
+	<form action="comment" method="post">
+		<p>
+		<input type="hidden" name="userid" value="12345">
+		<input type="hidden" name="hyouka" value="good">
+		<input type="hidden" name="riyu" value="1">
+		<input type="submit" value="上記内容で送信する">
+		</p>
+		submit
+	</form>
+</div>
+
 </body>
 </html>
