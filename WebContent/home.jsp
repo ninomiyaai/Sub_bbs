@@ -16,36 +16,51 @@
 
 <div class="header">
 	<a href="newMessage">投稿する</a>
-	<a href="">ユーザー管理</a>
+	<a href="userControl">ユーザー管理</a>
 	<a href="login">ログアウト</a>
 </div>
 
-errer
+<c:if test="${ not empty errorMessages }">
+	<div class="errorMessages">
+		<ul>
+			<c:forEach items="${errorMessages}" var="message">
+				<li><c:out value="${message}" />
+			</c:forEach>
+		</ul>
+	</div>
+	<c:remove var="errorMessages" scope="session"/>
+</c:if>
+
 
 
 <div class="messages">
 	<c:forEach items="${messages}" var="message">
-				<div class="title"><c:out value="${message.title}" /></div>
-				<div class="text"><c:out value="${message.text}" /></div>
-				<div class="name"><c:out value="${message.name}" /></div>
-				<div class="category"><c:out value="${message.category}" /></div>
-				<div class="created_at"><fmt:formatDate value="${message.created_at}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
-				<h5>-----------------------</h5>
-			</div>
+		<hr><hr>
+		<div class="title"><c:out value="${message.title}" /></div>
+		<div class="text"><c:out value="${message.text}" /></div>
+		<div class="name"><c:out value="${message.name}" /></div>
+		<div class="category"><c:out value="${message.category}" /></div>
+		<div class="created_at"><fmt:formatDate value="${message.created_at}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+		<div class="comments">
+			<c:forEach items="${comments}" var="comment">
+				<c:if test="${message.id == comment.message_id}">
+					<hr>
+					<div class="text"><p><c:out value="${comment.text}" /></p></div>
+					<div class="name"><c:out value="${comment.name}" /></div>
+					<div class="created_at"><fmt:formatDate value="${comment.created_at}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+				</c:if>
+			</c:forEach>
+			コメント<br />
+			<form action="comment" method="post">
+				<input type="hidden" name="message_id" value="${message.id}">
+				<textarea name="text" cols="50" rows="5" class="text-box"><c:out value="${comment.text}" /></textarea><br /><br />
+				<input type="submit" value="コメントを送信する">
+			</form>
+		</div>
 	</c:forEach>
 </div>
 
-<div class="comment">
-	<form action="comment" method="post">
-		<p>
-		<input type="hidden" name="userid" value="12345">
-		<input type="hidden" name="hyouka" value="good">
-		<input type="hidden" name="riyu" value="1">
-		<input type="submit" value="上記内容で送信する">
-		</p>
-		submit
-	</form>
-</div>
+
 
 </body>
 </html>

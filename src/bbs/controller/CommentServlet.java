@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
+
 import bbs.beans.Comment;
 import bbs.beans.User;
 import bbs.service.CommentService;
@@ -24,31 +26,50 @@ public class CommentServlet extends HttpServlet {
 			HttpServletResponse response) throws IOException, ServletException {
 
 		HttpSession session = request.getSession();
-
 		List<String> comments = new ArrayList<String>();
 
 		if (isValid(request, comments) == true) {
 
-			User user = (User) session.getAttribute("loginUser");
-
-			Comment comment = new Comment();
-			comment.setText(request.getParameter("comment"));
-			comment.setUser_id(user.getId());
+			Comment comment = getComment(request, comments);
 
 			new CommentService().register(comment);
 
+			session.removeAttribute("message");
 			response.sendRedirect("./");
 		} else {
+			Comment comment = getComment(request, comments);
+			session.setAttribute("comment", comment);
 			session.setAttribute("errorMessages", comments);
+
 			response.sendRedirect("./");
 		}
 	}
 
+	private Comment getComment(HttpServletRequest request, List<String> comments)
+			throws IOException, ServletException {
+
+		HttpSession session = request.getSession();
+		Comment comment = (Comment) session.getAttribute("comment");
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		if ( comment == null) {
+			comment = new Comment();
+		}
+		comment.setText(request.getParameter("text"));
+		comment.setUser_id(loginUser.getId());
+		comment.setMessage_id(Integer.parseInt(request.getParameter("message_id")));
+
+		return comment;
+	}
+
 	private boolean isValid(HttpServletRequest request, List<String> comments) {
 
-		String comment = request.getParameter("comment");
+		String text = request.getParameter("text");
 
-		if (500 < comment.length()) {
+		if (StringUtils.isEmpty(text) == true) {
+			comments.add("件名を入力してください");
+		}
+		if (500 < text.length()) {
 			comments.add("500文字以下で入力してください");
 		}
 		if (comments.size() == 0) {
@@ -59,3 +80,4 @@ public class CommentServlet extends HttpServlet {
 	}
 
 }
+

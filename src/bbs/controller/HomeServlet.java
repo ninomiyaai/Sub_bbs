@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bbs.beans.User;
+import bbs.beans.UserComment;
 import bbs.beans.UserMessage;
+import bbs.service.CommentService;
 import bbs.service.MessageService;
 
 @WebServlet(urlPatterns = { "/index.jsp" })
@@ -21,18 +22,13 @@ public class HomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
 
-		User user = (User) request.getSession().getAttribute("loginUser");
-		boolean isShowMessageForm;
-		if (user != null) {
-			isShowMessageForm = true;
-		} else {
-			isShowMessageForm = false;
-		}
-
 		List<UserMessage> messages = new MessageService().getMessage();
+		List<UserComment> comments = new CommentService().getComment();
+		System.out.println(comments.size());
 
 		request.setAttribute("messages",  messages);
-		request.setAttribute("isShowMessageForm",  isShowMessageForm);
+		request.setAttribute("comments",  comments);
+
 
 		request.getRequestDispatcher("/home.jsp").forward(request,response);
 	}
