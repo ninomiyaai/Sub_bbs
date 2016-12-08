@@ -1,11 +1,11 @@
 package bbs.controller;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,83 +21,109 @@ import bbs.service.BranchService;
 import bbs.service.PositionService;
 import bbs.service.UserService;
 
-@WebServlet(urlPatterns = { "/signup" })
-public class SignupServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/userSetting" })
+@MultipartConfig(maxFileSize = 100000)
+public class UserSettingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException {
+			HttpServletResponse response) throws ServletException, IOException {
 
 		List<Branch> branches = new BranchService().getBranch();
 		request.setAttribute("branches",  branches);
 		List<Position> positions = new PositionService().getPosition();
 		request.setAttribute("positions",  positions);
 
-		request.getRequestDispatcher("signup.jsp").forward(request, response);
+		HttpSession session = request.getSession();
+		int id = (Integer.parseInt(request.getParameter("id")));
+
+	//	if (session.getAttribute("editUser") == null) {
+			User editUser = new UserService().getUser(id);
+			session.setAttribute("editUser", editUser);
+	//	}
+
+	// ↑ のこしとく
+
+		request.getRequestDispatcher("userSetting.jsp").forward(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException {
+			HttpServletResponse response) throws ServletException, IOException {
+
+		List<Branch> branches = new BranchService().getBranch();
+		request.setAttribute("branches",  branches);
+		List<Position> positions = new PositionService().getPosition();
+		request.setAttribute("positions",  positions);
+
 
 		List<String> messages = new ArrayList<String>();
 		HttpSession session = request.getSession();
 
-//		User signupUser = getSignupUser(request, messages);
-//		session.setAttribute("signupUser", signupUser);
+//		System.out.println("あああ");
 
-
+//		User editUser = getEditUser(request);
+//		session.setAttribute("editUser", editUser);
 
 		if (isValid(request, messages) == true) {
-			User signupUser = getSignupUser(request, messages);
-			session.setAttribute("signupUser", signupUser);
+			User editUser = getEditUser(request);
+			session.setAttribute("editUser", editUser);
 
-			new UserService().register(signupUser);
-			session.removeAttribute("signupUser");
+			new UserService().update(editUser);
 
-			response.sendRedirect("./");
+//			try {
+//				new UserService().update(editUser);
+//			} catch (NoRowsUpdatedRuntimeException e) {
+//				session.removeAttribute("editUser");
+//				messages.add("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");
+//				session.setAttribute("errorMessages", messages);
+//				response.sendRedirect("userSetting");
+//			}
+
+//			session.setAttribute("editUser", editUser);
+			session.removeAttribute("editUser");
+
+			response.sendRedirect("userControl");
 		} else {
-			User signupUser = getSignupUser(request, messages);
-			session.setAttribute("signupUser", signupUser);
+			User editUser = getEditUser(request);
+			session.setAttribute("editUser", editUser);
 			session.setAttribute("errorMessages", messages);
 
-			response.sendRedirect("signup");
+//			response.sendRedirect("userSetting");
+			request.getRequestDispatcher("userSetting.jsp").forward(request, response);
 		}
 	}
 
-	private User getSignupUser(HttpServletRequest request, List<String> messages)
+	private User getEditUser(HttpServletRequest request)
 			throws IOException, ServletException {
 
 		HttpSession session = request.getSession();
-		User signupUser = (User) session.getAttribute("signupUser");
-		if (signupUser == null) {
-			 signupUser = new User();
-		}
+		User editUser = (User) session.getAttribute("editUser");
 
-		signupUser.setLogin_id(request.getParameter("login_id"));
-		signupUser.setPassword(request.getParameter("password"));
-		signupUser.setName(request.getParameter("name"));
+		editUser.setLogin_id(request.getParameter("login_id"));
+		editUser.setPassword(request.getParameter("password"));
+		editUser.setName(request.getParameter("name"));
 		try {
-			signupUser.setBranch_id(Integer.parseInt(request.getParameter("branch_id")));
+			editUser.setBranch_id(Integer.parseInt(request.getParameter("branch_id")));
 		} catch (NumberFormatException e) {
-			signupUser.setBranch_id(0);
+			editUser.setBranch_id(0);
 		}
 		try {
-			signupUser.setPosition_id(Integer.parseInt(request.getParameter("position_id")));
+			editUser.setPosition_id(Integer.parseInt(request.getParameter("position_id")));
 		} catch (NumberFormatException e) {
-			signupUser.setPosition_id(0);
+			editUser.setPosition_id(0);
 		}
-		return signupUser;
+		return editUser;
 	}
 
 	private boolean isValid(HttpServletRequest request, List<String> messages) {
 
 		String login_id = request.getParameter("login_id");
 		String password = request.getParameter("password");
+		String name = request.getParameter("name");
 		String branch_id = request.getParameter("branch_id");
 		String position_id = request.getParameter("position_id");
-		String name = request.getParameter("name");
 
 		if (StringUtils.isEmpty(login_id) == true) {
 			messages.add("ログインIDを入力してください");
@@ -123,7 +149,6 @@ public class SignupServlet extends HttpServlet {
 			Integer.parseInt(request.getParameter("position_id"));
 		} catch (NumberFormatException e){
 		}
-
 		// TODO アカウントが既に利用されていないか、メールアドレスが既に登録されていないかなどの確認も必要
 		if (messages.size() == 0) {
 			return true;
