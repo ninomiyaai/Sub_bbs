@@ -27,12 +27,19 @@
 			<div class="name"><c:out value="${users.name}" /></div>
 
 			<input type="submit" value="編集" onClick="location.href='userSetting?id=${users.id}'">
-				<c:if test="${users.deleted == true}">
-					<input type="submit" value="停止" onClick="location.href='userControl'">
-				</c:if>
-				<c:if test="${users.deleted == false}">
-					<input type="submit" value="復活" onClick="location.href='userControl'">
-				</c:if>
+
+			<c:if test="${users.deleted == true}">
+				<input type="submit" value="停止" onClick="location.href='userControl'">
+			</c:if>
+			<c:if test="${users.deleted == false}">
+				<input type="submit" value="復活" onClick="location.href='userControl'">
+			</c:if>
+
+
+			<form action="userControl" method="post">
+			<INPUT type="submit" name="" value="停止" onclick="location.href='userControl'">
+			</form>
+
 		</c:forEach>
 	</div>
 </div>

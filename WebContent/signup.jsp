@@ -29,6 +29,8 @@
 
 	<label for="password">パスワード</label>
 	<input name="password" type="password" id="password"/> <br />
+	<label for="password">パスワード(確認)</label>
+	<input name="confirm_password" type="password" id="confirm_password"/> <br />
 
 	<label for="name">名前</label>
 	<input name="name" value="${signupUser.name}" id="name"/> <br />
@@ -67,7 +69,7 @@
 
 
 	<input type="submit" value="登録" /> <br /> <br />
-	<a href="./">戻る</a>
+	<a href="userControl">戻る</a>
 
 </form>
 </div>

@@ -95,6 +95,7 @@ public class SignupServlet extends HttpServlet {
 
 		String login_id = request.getParameter("login_id");
 		String password = request.getParameter("password");
+		String confirm_password = request.getParameter("confirm_password");
 		String branch_id = request.getParameter("branch_id");
 		String position_id = request.getParameter("position_id");
 		String name = request.getParameter("name");
@@ -104,7 +105,17 @@ public class SignupServlet extends HttpServlet {
 		}
 		if (StringUtils.isEmpty(password) == true) {
 			messages.add("パスワードを入力してください");
+		} else {
+			if (StringUtils.isEmpty(confirm_password) == true) {
+				messages.add("パスワードが一致しません");
+			} else {
+				if ((password.equals(confirm_password)) == false) {
+					messages.add("パスワードが一致しません");
+				}
+			}
 		}
+
+
 		if (StringUtils.isEmpty(name) == true) {
 			messages.add("名前を入力してください");
 		}

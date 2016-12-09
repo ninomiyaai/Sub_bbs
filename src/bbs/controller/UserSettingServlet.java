@@ -42,7 +42,6 @@ public class UserSettingServlet extends HttpServlet {
 			User editUser = new UserService().getUser(id);
 			session.setAttribute("editUser", editUser);
 	//	}
-
 	// ↑ のこしとく
 
 		request.getRequestDispatcher("userSetting.jsp").forward(request, response);
@@ -83,13 +82,12 @@ public class UserSettingServlet extends HttpServlet {
 
 //			session.setAttribute("editUser", editUser);
 			session.removeAttribute("editUser");
-
 			response.sendRedirect("userControl");
+
 		} else {
 			User editUser = getEditUser(request);
 			session.setAttribute("editUser", editUser);
 			session.setAttribute("errorMessages", messages);
-
 //			response.sendRedirect("userSetting");
 			request.getRequestDispatcher("userSetting.jsp").forward(request, response);
 		}
@@ -100,9 +98,12 @@ public class UserSettingServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		User editUser = (User) session.getAttribute("editUser");
+		String password = request.getParameter("password");
 
 		editUser.setLogin_id(request.getParameter("login_id"));
+
 		editUser.setPassword(request.getParameter("password"));
+
 		editUser.setName(request.getParameter("name"));
 		try {
 			editUser.setBranch_id(Integer.parseInt(request.getParameter("branch_id")));
@@ -121,6 +122,7 @@ public class UserSettingServlet extends HttpServlet {
 
 		String login_id = request.getParameter("login_id");
 		String password = request.getParameter("password");
+		String confirm_password = request.getParameter("confirm_password");
 		String name = request.getParameter("name");
 		String branch_id = request.getParameter("branch_id");
 		String position_id = request.getParameter("position_id");
@@ -128,8 +130,8 @@ public class UserSettingServlet extends HttpServlet {
 		if (StringUtils.isEmpty(login_id) == true) {
 			messages.add("ログインIDを入力してください");
 		}
-		if (StringUtils.isEmpty(password) == true) {
-			messages.add("パスワードを入力してください");
+		if (password.equals(confirm_password) == false) {
+			messages.add("パスワードが一致しません");
 		}
 		if (StringUtils.isEmpty(name) == true) {
 			messages.add("名前を入力してください");

@@ -22,18 +22,12 @@ public class UserControlServlet extends HttpServlet {
 
 		List<User> users = new UserService().getUsers();
 
-
-//		List<UserMessage> messages = new MessageService().getMessage();
-//		List<UserComment> comments = new CommentService().getComment();
-//		System.out.println(comments.size());
-
-//		request.setAttribute("messages",  messages);
-//		request.setAttribute("comments",  comments);
-
 		request.setAttribute("users",  users);
 
 
 		request.getRequestDispatcher("/userControl.jsp").forward(request,response);
 	}
+
+
 
 }

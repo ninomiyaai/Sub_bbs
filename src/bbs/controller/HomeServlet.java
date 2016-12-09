@@ -24,7 +24,7 @@ public class HomeServlet extends HttpServlet {
 
 		List<UserMessage> messages = new MessageService().getMessage();
 		List<UserComment> comments = new CommentService().getComment();
-		System.out.println(comments.size());
+//		System.out.println(comments.size());
 
 		request.setAttribute("messages",  messages);
 		request.setAttribute("comments",  comments);
@@ -34,3 +34,4 @@ public class HomeServlet extends HttpServlet {
 	}
 
 }
+

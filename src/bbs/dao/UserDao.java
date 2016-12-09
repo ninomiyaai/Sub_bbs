@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import bbs.beans.User;
 import bbs.exception.NoRowsUpdatedRuntimeException;
 import bbs.exception.SQLRuntimeException;
@@ -170,27 +172,33 @@ public class UserDao {
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE users SET ");
 			sql.append(" login_id = ?");
-			sql.append(", password = ?");
 			sql.append(", name = ?");
 			sql.append(", branch_id = ?");
 			sql.append(", position_id = ?");
 			sql.append(", deleted = true");
 //			sql.append(", created_at = CURRENT_TIMESTAMP");
 			sql.append(", updated_at = CURRENT_TIMESTAMP");
+			if (!(StringUtils.isEmpty(user.getPassword()))) {
+				sql.append(", password = ?");
+			}
 			sql.append(" WHERE ");
 			sql.append("id = ?");
 
 			ps = connection.prepareStatement(sql.toString());
 
 			ps.setString(1, user.getLogin_id());
-			ps.setString(2, user.getPassword());
-			ps.setString(3, user.getName());
-			ps.setInt(4, user.getBranch_id());
-			ps.setInt(5, user.getPosition_id());
-			ps.setInt(6, user.getId());
+			ps.setString(2, user.getName());
+			ps.setInt(3, user.getBranch_id());
+			ps.setInt(4, user.getPosition_id());
+			if (!(StringUtils.isEmpty(user.getPassword()))) {
+				ps.setString(5, user.getPassword());
+				ps.setInt(6, user.getId());
+			} else {
+				ps.setInt(5, user.getId());
+			}
+
 
 			System.out.println(ps);
-
 
 //			ps.setTimestamp(6,  new Timestamp(user.getUpdated_at().getTime()));
 
