@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bbs.beans.Message;
 import bbs.beans.UserComment;
 import bbs.beans.UserMessage;
 import bbs.service.CommentService;
@@ -23,14 +24,17 @@ public class HomeServlet extends HttpServlet {
 			HttpServletResponse response) throws IOException, ServletException {
 
 		List<UserMessage> messages = new MessageService().getMessage();
-		List<UserComment> comments = new CommentService().getComment();
-//		System.out.println(comments.size());
-
 		request.setAttribute("messages",  messages);
+		List<UserComment> comments = new CommentService().getComment();
 		request.setAttribute("comments",  comments);
 
+		List<Message> categories = new MessageService().getCategories();
+		request.setAttribute("categories", categories);
 
-		request.getRequestDispatcher("/home.jsp").forward(request,response);
+//		System.out.println(comments.size());
+
+
+		request.getRequestDispatcher("home.jsp").forward(request,response);
 	}
 
 }

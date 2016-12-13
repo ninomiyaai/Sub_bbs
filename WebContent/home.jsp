@@ -17,7 +17,7 @@
 <div class="header">
 	<a href="newMessage">投稿する</a>
 	<a href="userControl">ユーザー管理</a>
-	<a href="login">ログアウト</a>
+	<a href="logout">ログアウト</a>
 </div>
 
 <c:if test="${ not empty errorMessages }">
@@ -31,7 +31,24 @@
 	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 
+<div class="narrowing">
+<form action="./" method="get"><br />
+	<p>
+	<label for="category">カテゴリー</label>
+	<select name="category">
+		<option value=""></option>
+		<c:forEach items="${categories}" var="c">
 
+		<option value="${c.category}">${c.category}</option>
+
+		</c:forEach>
+	</select>
+	</p>
+
+	<input type="submit" value="検索"/> <br /> <br />
+
+</form>
+</div>
 
 <div class="messages">
 	<c:forEach items="${messages}" var="message">

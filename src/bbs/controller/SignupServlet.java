@@ -48,7 +48,6 @@ public class SignupServlet extends HttpServlet {
 //		session.setAttribute("signupUser", signupUser);
 
 
-
 		if (isValid(request, messages) == true) {
 			User signupUser = getSignupUser(request, messages);
 			session.setAttribute("signupUser", signupUser);

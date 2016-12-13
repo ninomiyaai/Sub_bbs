@@ -58,4 +58,27 @@ public class MessageService {
 			close(connection);
 		}
 	}
+
+	public List<Message> getCategories() {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			MessageDao messageDao = new MessageDao();
+			List<Message> ret = messageDao.getCategories(connection);
+
+			commit(connection);
+
+			return ret;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
 }

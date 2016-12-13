@@ -67,6 +67,7 @@
 	</select>
 	</p>
 
+	<c:remove var="signupUser" scope="session"/>
 
 	<input type="submit" value="登録" /> <br /> <br />
 	<a href="userControl">戻る</a>

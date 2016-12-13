@@ -36,6 +36,8 @@ public class LoginServlet extends HttpServlet {
 		LoginService loginService = new LoginService();
 		User user = loginService.login(login_id, password);
 
+		System.out.println(user);
+
 		HttpSession session = request.getSession();
 		if (user != null) {
 
@@ -51,5 +53,17 @@ public class LoginServlet extends HttpServlet {
 
 		}
 	}
+
+//	private User getDeletedUser(HttpServletRequest request)
+//			throws IOException, ServletException {
+//
+//		String login_id = request.getParameter("login_id");
+//
+//		User user = new User();
+//		user.setLogin_id(login_id);
+//		user.setDeleted(Integer.parseInt(request.getParameter("deleted")));
+//
+//		return user;
+//	}
 
 }

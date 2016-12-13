@@ -12,7 +12,7 @@ public class User implements Serializable {
 	private String name;
 	private int branch_id;
 	private int position_id;
-	private boolean deleted;
+	private int deleted;
 	private Date created_at;
 	private Date updated_at;
 
@@ -58,10 +58,10 @@ public class User implements Serializable {
 		this.position_id = position_id;
 	}
 
-	public boolean getDeleted() {
+	public int getDeleted() {
 		return deleted;
 	}
-	public void setDeleted(boolean deleted) {
+	public void setDeleted(int deleted) {
 		this.deleted = deleted;
 	}
 

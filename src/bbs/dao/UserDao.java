@@ -36,7 +36,7 @@ public class UserDao {
 			sql.append(", ?");
 			sql.append(", ?");
 			sql.append(", ?");
-			sql.append(", true");
+			sql.append(", 0");
 			sql.append(", CURRENT_TIMESTAMP");
 			sql.append(", CURRENT_TIMESTAMP");
 			sql.append(")");
@@ -63,7 +63,11 @@ public class UserDao {
 	public User getUser(Connection connection, String login_id, String password) {
 		PreparedStatement ps = null;
 		try {
-			String sql = "SELECT * FROM users WHERE login_id = ? AND password = ?";
+
+			System.out.println(password);
+			String sql = "SELECT * FROM users WHERE login_id = ? AND password = ? AND deleted = 0";
+
+
 
 			ps = connection.prepareStatement(sql);
 			ps.setString(1, login_id);
@@ -142,7 +146,7 @@ public class UserDao {
 				String name = rs.getString("name");
 				int branch_id = rs.getInt("branch_id");
 				int position_id = rs.getInt("position_id");
-				boolean deleted = rs.getBoolean("deleted");
+				int deleted = rs.getInt("deleted");
 				Timestamp created_at = rs.getTimestamp("created_at");
 				Timestamp updated_at = rs.getTimestamp("updated_at");
 
@@ -175,7 +179,7 @@ public class UserDao {
 			sql.append(", name = ?");
 			sql.append(", branch_id = ?");
 			sql.append(", position_id = ?");
-			sql.append(", deleted = true");
+			sql.append(", deleted = 0");
 //			sql.append(", created_at = CURRENT_TIMESTAMP");
 			sql.append(", updated_at = CURRENT_TIMESTAMP");
 			if (!(StringUtils.isEmpty(user.getPassword()))) {
@@ -213,4 +217,31 @@ public class UserDao {
 		}
 	}
 
+	public void updateDeleted(Connection connection, User user) {
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE users SET ");
+			sql.append(" deleted = ?");
+			sql.append(" WHERE ");
+			sql.append("id = ?");
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ps.setInt(1, user.getDeleted());
+			ps.setInt(2, user.getId());
+
+			System.out.println(ps);
+
+			int count = ps.executeUpdate();
+			if (count == 0) {
+				throw new NoRowsUpdatedRuntimeException();
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
 }

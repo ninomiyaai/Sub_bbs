@@ -33,6 +33,8 @@
 
 	<input type="submit" value="ログイン" /> <br />
 </form>
+
+<c:remove var="login_id" scope="session"/>
 </div>
 </body>
 </html>
