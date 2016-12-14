@@ -35,12 +35,23 @@ public class UserSettingServlet extends HttpServlet {
 		List<Position> positions = new PositionService().getPosition();
 		request.setAttribute("positions",  positions);
 
-		HttpSession session = request.getSession();
-		int id = (Integer.parseInt(request.getParameter("id")));
+		List<User> users = new UserService().getUsers();
+		request.setAttribute("users",  users);
+
+		System.out.println(users);
+
+//		HttpSession session = request.getSession();
+//		int id = (Integer.parseInt(request.getParameter("user_id")));
+
+
+
+
 
 	//	if (session.getAttribute("editUser") == null) {
-			User editUser = new UserService().getUser(id);
-			session.setAttribute("editUser", editUser);
+
+			User editUser = new User();
+//			User editUser = new UserService().getUser(id);
+			request.setAttribute("editUser", editUser);
 	//	}
 	// ↑ のこしとく
 
@@ -56,37 +67,33 @@ public class UserSettingServlet extends HttpServlet {
 		List<Position> positions = new PositionService().getPosition();
 		request.setAttribute("positions",  positions);
 
+		List<User> users = new UserService().getUsers();
+		request.setAttribute("users",  users);
 
 		List<String> messages = new ArrayList<String>();
 		HttpSession session = request.getSession();
+		int id = (Integer.parseInt(request.getParameter("user_id")));
 
-//		System.out.println("あああ");
 
-//		User editUser = getEditUser(request);
-//		session.setAttribute("editUser", editUser);
 
 		if (isValid(request, messages) == true) {
-			User editUser = getEditUser(request);
-			session.setAttribute("editUser", editUser);
+			User editUser = new UserService().getUser(id);
+//			request.setAttribute("editUser", editUser);
+
+//			User editUser = getEditUser(request);
+//			session.setAttribute("editUser", editUser);
+			request.setAttribute("editUser", editUser);
 
 			new UserService().update(editUser);
 
-//			try {
-//				new UserService().update(editUser);
-//			} catch (NoRowsUpdatedRuntimeException e) {
-//				session.removeAttribute("editUser");
-//				messages.add("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");
-//				session.setAttribute("errorMessages", messages);
-//				response.sendRedirect("userSetting");
-//			}
-
-//			session.setAttribute("editUser", editUser);
-			session.removeAttribute("editUser");
 			response.sendRedirect("userControl");
 
 		} else {
-			User editUser = getEditUser(request);
-			session.setAttribute("editUser", editUser);
+			User editUser = new UserService().getUser(id);
+//			request.setAttribute("editUser", editUser);
+
+//			User editUser = getEditUser(request);
+			request.setAttribute("editUser", editUser);
 			session.setAttribute("errorMessages", messages);
 //			response.sendRedirect("userSetting");
 			request.getRequestDispatcher("userSetting.jsp").forward(request, response);
@@ -96,14 +103,16 @@ public class UserSettingServlet extends HttpServlet {
 	private User getEditUser(HttpServletRequest request)
 			throws IOException, ServletException {
 
-		HttpSession session = request.getSession();
-		User editUser = (User) session.getAttribute("editUser");
-		String password = request.getParameter("password");
+//		HttpSession session = request.getSession();
+		int id = (Integer.parseInt(request.getParameter("user_id")));
+		User editUser = new UserService().getUser(id);
+
+//		User editUser = (User) request.getAttribute("editUser");
+		System.out.println(editUser);
+//		String password = request.getParameter("password");
 
 		editUser.setLogin_id(request.getParameter("login_id"));
-
 		editUser.setPassword(request.getParameter("password"));
-
 		editUser.setName(request.getParameter("name"));
 		try {
 			editUser.setBranch_id(Integer.parseInt(request.getParameter("branch_id")));

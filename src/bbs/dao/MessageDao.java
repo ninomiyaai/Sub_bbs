@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bbs.beans.Message;
+import bbs.beans.UserMessage;
 import bbs.exception.SQLRuntimeException;
 
 public class MessageDao {
@@ -80,6 +81,44 @@ public class MessageDao {
 
 				Message message = new Message();
 				message.setCategory(category);
+
+				ret.add(message);
+			}
+			return ret;
+		} finally {
+			close(rs);
+		}
+	}
+
+	public List<Message> getOldDate(Connection connection) {
+		PreparedStatement ps = null;
+		try {
+			String sql = "SELECT * FROM messages where created_at = ?";
+
+			ps = connection.prepareStatement(sql);
+
+			ResultSet rs = ps.executeQuery();
+			List<UserMessage> ret = toOldDateList(rs);
+			return ret;
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+
+
+	private List<Message> toOldDateList(ResultSet rs)
+			throws SQLException {
+
+		List<Message> ret = new ArrayList<Message>();
+		try {
+			while (rs.next()) {
+				String created_at = rs.getString("created_at");
+
+				Message message = new Message();
+				message.setCreated_at(created_at);
 
 				ret.add(message);
 			}

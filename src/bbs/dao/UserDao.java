@@ -64,7 +64,7 @@ public class UserDao {
 		PreparedStatement ps = null;
 		try {
 
-			System.out.println(password);
+//			System.out.println(password);
 			String sql = "SELECT * FROM users WHERE login_id = ? AND password = ? AND deleted = 0";
 
 

@@ -24,6 +24,11 @@
 </c:if>
 <form action="userSetting" method="post"><br />
 
+
+<input type="hidden" name="user_id" value="${users.id}">
+
+
+
 	<label for="login_id">ログインID</label>
 	<input name="login_id" value="${editUser.login_id}" id="login_id"/> <br />
 

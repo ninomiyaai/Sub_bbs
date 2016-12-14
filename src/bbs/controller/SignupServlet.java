@@ -58,10 +58,12 @@ public class SignupServlet extends HttpServlet {
 			response.sendRedirect("./");
 		} else {
 			User signupUser = getSignupUser(request, messages);
-			session.setAttribute("signupUser", signupUser);
+
+			request.setAttribute("signupUser", signupUser);
 			session.setAttribute("errorMessages", messages);
 
-			response.sendRedirect("signup");
+			request.getRequestDispatcher("userSetting.jsp").forward(request, response);
+//			response.sendRedirect("signup");
 		}
 	}
 

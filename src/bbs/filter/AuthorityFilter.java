@@ -28,7 +28,7 @@ public class AuthorityFilter implements Filter {
 		String requestUrlStr = requestUrl.toString();
 
 
-		System.out.println(requestUrlStr);
+//		System.out.println(requestUrlStr);
 
 		//キャスト
 		HttpSession session = ((HttpServletRequest)request).getSession();

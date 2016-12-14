@@ -10,18 +10,29 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import bbs.beans.UserMessage;
 import bbs.exception.SQLRuntimeException;public class UserMessageDao {
 
-	public List<UserMessage> getUserMessages(Connection connection, int num) {
+	public List<UserMessage> getUserMessages(Connection connection, int num, String category, String oldDate, String newDate) {
 
 		PreparedStatement ps = null;
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT * FROM user_message ");
+			sql.append("SELECT * FROM user_message where created_at between ? and ? ");
+			if (!(StringUtils.isEmpty(category))) {
+				sql.append("and category = ? ");
+			}
 			sql.append("ORDER BY created_at DESC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());
+
+			ps.setString(1, oldDate);
+			ps.setString(2, newDate);
+			if (!(StringUtils.isEmpty(category))) {
+				ps.setString(3, category);
+			}
 
 			ResultSet rs = ps.executeQuery();
 			List<UserMessage> ret = toUserMessageList(rs);

@@ -36,14 +36,14 @@ public class MessageService {
 
 	private static final int LIMIT_NUM = 1000;
 
-	public List<UserMessage> getMessage() {
+	public List<UserMessage> getMessage(String category, String oldDate, String newDate) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
 			UserMessageDao messageDao = new UserMessageDao();
-			List<UserMessage> ret = messageDao.getUserMessages(connection, LIMIT_NUM);
+			List<UserMessage> ret = messageDao.getUserMessages(connection, LIMIT_NUM, category, oldDate, newDate);
 
 			commit(connection);
 

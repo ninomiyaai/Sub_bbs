@@ -38,9 +38,26 @@
 	<select name="category">
 		<option value=""></option>
 		<c:forEach items="${categories}" var="c">
+			<c:if test="${c.category != category}">
+				<option value="${c.category}">${c.category}</option>
+			</c:if>
+			<c:if test="${c.category == category}">
+				<option value="${c.category}" selected>${c.category}</option>
+			</c:if>
+		</c:forEach>
+	</select>
+	</p>
 
-		<option value="${c.category}">${c.category}</option>
-
+	<label for="category">投稿日時</label>
+	<select name="category">
+		<option value=""></option>
+		<c:forEach items="${categories}" var="c">
+		<c:if test="${c.category != category}">
+			<option value="${c.category}">${c.category}</option>
+		</c:if>
+		<c:if test="${c.category == category}">
+			<option value="${c.category}" selected>${c.category}</option>
+		</c:if>
 		</c:forEach>
 	</select>
 	</p>
@@ -76,8 +93,5 @@
 		</div>
 	</c:forEach>
 </div>
-
-
-
 </body>
 </html>

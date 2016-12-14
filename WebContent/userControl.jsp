@@ -41,7 +41,7 @@
 			<div class="login_id"><c:out value="${users.login_id}" /></div>
 			<div class="name"><c:out value="${users.name}" /></div>
 
-			<input type="submit" value="編集">
+			<input type="submit" value="編集" onClick="location.href='userSetting?id=${users.id}'">
 
 
 			<form action="userControl" method="post" onSubmit="return check()">

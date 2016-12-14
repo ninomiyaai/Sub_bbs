@@ -23,19 +23,39 @@ public class HomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
 
-		List<UserMessage> messages = new MessageService().getMessage();
-		request.setAttribute("messages",  messages);
+		String category = request.getParameter("category");
+		String oldDate = request.getParameter("oldDate");
+		String newDate = request.getParameter("newDate");
+
+		// 一覧を取得する処理
+		List<UserMessage> messages = new MessageService().getMessage(category, oldDate, newDate);
 		List<UserComment> comments = new CommentService().getComment();
-		request.setAttribute("comments",  comments);
-
 		List<Message> categories = new MessageService().getCategories();
+
+		// JSPに渡す処理
+		request.setAttribute("messages",  messages);
+		request.setAttribute("comments",  comments);
 		request.setAttribute("categories", categories);
-
-//		System.out.println(comments.size());
-
+		request.setAttribute("category", category);
+		request.setAttribute("oldDate", oldDate);
+		request.setAttribute("newDate", newDate);
 
 		request.getRequestDispatcher("home.jsp").forward(request,response);
 	}
+
+//	private Message getChoice(HttpServletRequest request, List<Message> category)
+//			throws IOException, ServletException {
+//
+//		HttpSession session = request.getSession();
+//		Message choice = (Message) session.getAttribute("choice");
+//		if (choice == null) {
+//			 choice = new Message();
+//		}
+//
+//		choice.setCategory(request.getParameter("category"));
+//
+//		return choice;
+//	}
 
 }
 

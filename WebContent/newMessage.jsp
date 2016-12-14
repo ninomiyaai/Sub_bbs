@@ -27,18 +27,17 @@
 <form action="newMessage" method="post"><br />
 
 	件名<br />
-	<textarea name="title" value="${message.title}" cols="70" rows="3" class="title-box"></textarea><br /><br />
+	<textarea name="title" id="title" cols="70" rows="3" class="title-box">${message.title}</textarea><br /><br />
 	本文<br />
-	<textarea name="text" value="${message.text}" cols="70" rows="8" class="text-box"></textarea><br /><br />
+	<textarea name="text" id="text"cols="70" rows="8" class="text-box">${message.text}</textarea><br /><br />
 
 	<label for="category">カテゴリー</label>
 	<input name="category" value="${message.category}" id="category"/> <br />
 
-
+	<c:remove var="message" scope="session"/>
 
 	<input type="submit" value="投稿" /> <br /> <br />
 	<a href="./">戻る</a>
-
 </form>
 </div>
 </body>
