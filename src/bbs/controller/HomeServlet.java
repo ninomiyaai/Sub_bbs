@@ -1,6 +1,8 @@
 package bbs.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -8,6 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
 
 import bbs.beans.Message;
 import bbs.beans.UserComment;
@@ -37,8 +41,21 @@ public class HomeServlet extends HttpServlet {
 		request.setAttribute("comments",  comments);
 		request.setAttribute("categories", categories);
 		request.setAttribute("category", category);
-		request.setAttribute("oldDate", oldDate);
-		request.setAttribute("newDate", newDate);
+		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+
+		if (!(StringUtils.isEmpty(oldDate))) {
+			request.setAttribute("oldDate", oldDate);
+		} else {
+			String created_at = new MessageService().getOldDate().getCreated_at().toString();
+			oldDate = created_at;
+		}
+
+		if (!(StringUtils.isEmpty(newDate))) {
+			request.setAttribute("newDate", newDate);
+		} else {
+			String created_at = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+			newDate = created_at;
+		}
 
 		request.getRequestDispatcher("home.jsp").forward(request,response);
 	}

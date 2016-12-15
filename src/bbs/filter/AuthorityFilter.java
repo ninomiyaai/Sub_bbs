@@ -55,26 +55,26 @@ public class AuthorityFilter implements Filter {
 
 	}
 
-	public void AuthorityCheck(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
-
-
-
-		//キャスト
-		HttpSession session = ((HttpServletRequest)request).getSession();
-
-		User user = (User)session.getAttribute("loginUser");
-		if (!((user.getBranch_id() == 1) && (user.getPosition_id() == (4 | 3)))) {
-
-			List<String> messages = new ArrayList<String>();
-			messages.add("権限を持っていません。");
-			session.setAttribute("errorMessages", messages);
-
-			((HttpServletResponse)response).sendRedirect("./");
-
-			return;
-		}
-	}
+//	public void AuthorityCheck(ServletRequest request, ServletResponse response,
+//			FilterChain chain) throws IOException, ServletException {
+//
+//
+//
+//		//キャスト
+//		HttpSession session = ((HttpServletRequest)request).getSession();
+//
+//		User user = (User)session.getAttribute("loginUser");
+//		if (!((user.getBranch_id() == 1) && (user.getPosition_id() == (4 | 3)))) {
+//
+//			List<String> messages = new ArrayList<String>();
+//			messages.add("権限を持っていません。");
+//			session.setAttribute("errorMessages", messages);
+//
+//			((HttpServletResponse)response).sendRedirect("./");
+//
+//			return;
+//		}
+//	}
 
 
 	@Override

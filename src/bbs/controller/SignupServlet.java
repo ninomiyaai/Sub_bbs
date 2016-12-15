@@ -41,6 +41,7 @@ public class SignupServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
 
+
 		List<String> messages = new ArrayList<String>();
 		HttpSession session = request.getSession();
 
@@ -50,19 +51,24 @@ public class SignupServlet extends HttpServlet {
 
 		if (isValid(request, messages) == true) {
 			User signupUser = getSignupUser(request, messages);
-			session.setAttribute("signupUser", signupUser);
+			request.setAttribute("signupUser", signupUser);
 
 			new UserService().register(signupUser);
-			session.removeAttribute("signupUser");
+//			session.removeAttribute("signupUser");
 
 			response.sendRedirect("./");
 		} else {
+			List<Branch> branches = new BranchService().getBranch();
+			request.setAttribute("branches",  branches);
+			List<Position> positions = new PositionService().getPosition();
+			request.setAttribute("positions",  positions);
+
 			User signupUser = getSignupUser(request, messages);
 
 			request.setAttribute("signupUser", signupUser);
 			session.setAttribute("errorMessages", messages);
 
-			request.getRequestDispatcher("userSetting.jsp").forward(request, response);
+			request.getRequestDispatcher("signup.jsp").forward(request, response);
 //			response.sendRedirect("signup");
 		}
 	}
@@ -70,8 +76,8 @@ public class SignupServlet extends HttpServlet {
 	private User getSignupUser(HttpServletRequest request, List<String> messages)
 			throws IOException, ServletException {
 
-		HttpSession session = request.getSession();
-		User signupUser = (User) session.getAttribute("signupUser");
+//		HttpSession session = request.getSession();
+		User signupUser = (User) request.getAttribute("signupUser");
 		if (signupUser == null) {
 			 signupUser = new User();
 		}

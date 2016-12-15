@@ -82,7 +82,49 @@ public class MessageService {
 		}
 	}
 
-	getOld
+	public Message getOldDate() {
 
-	getNew
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			MessageDao messageDao = new MessageDao();
+			Message ret = messageDao.getOldDate(connection);
+
+			commit(connection);
+
+			return ret;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public Message getNewDate() {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			MessageDao messageDao = new MessageDao();
+			Message ret = messageDao.getNewDate(connection);
+
+			commit(connection);
+
+			return ret;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
 }

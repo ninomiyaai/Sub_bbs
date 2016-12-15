@@ -35,22 +35,18 @@ public class UserSettingServlet extends HttpServlet {
 		List<Position> positions = new PositionService().getPosition();
 		request.setAttribute("positions",  positions);
 
-		List<User> users = new UserService().getUsers();
-		request.setAttribute("users",  users);
-
-		System.out.println(users);
+//		List<User> users = new UserService().getUsers();
+//		request.setAttribute("users",  users);
+//
+//		System.out.println(users);
 
 //		HttpSession session = request.getSession();
-//		int id = (Integer.parseInt(request.getParameter("user_id")));
 
 
-
-
+		int id = (Integer.parseInt(request.getParameter("id")));
 
 	//	if (session.getAttribute("editUser") == null) {
-
-			User editUser = new User();
-//			User editUser = new UserService().getUser(id);
+			User editUser = new UserService().getUser(id);
 			request.setAttribute("editUser", editUser);
 	//	}
 	// ↑ のこしとく
@@ -62,25 +58,24 @@ public class UserSettingServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		List<Branch> branches = new BranchService().getBranch();
-		request.setAttribute("branches",  branches);
-		List<Position> positions = new PositionService().getPosition();
-		request.setAttribute("positions",  positions);
 
-		List<User> users = new UserService().getUsers();
-		request.setAttribute("users",  users);
+//		List<User> users = new UserService().getUsers();
+//		request.setAttribute("users",  users);
+
+
 
 		List<String> messages = new ArrayList<String>();
 		HttpSession session = request.getSession();
-		int id = (Integer.parseInt(request.getParameter("user_id")));
-
+//		int id = (Integer.parseInt(request.getParameter("user_id")));
 
 
 		if (isValid(request, messages) == true) {
-			User editUser = new UserService().getUser(id);
+//			User editUser = new UserService().getUser(id);
 //			request.setAttribute("editUser", editUser);
 
-//			User editUser = getEditUser(request);
+			User editUser = getEditUser(request, messages);
+
+
 //			session.setAttribute("editUser", editUser);
 			request.setAttribute("editUser", editUser);
 
@@ -89,18 +84,25 @@ public class UserSettingServlet extends HttpServlet {
 			response.sendRedirect("userControl");
 
 		} else {
-			User editUser = new UserService().getUser(id);
+			List<Branch> branches = new BranchService().getBranch();
+			request.setAttribute("branches",  branches);
+			List<Position> positions = new PositionService().getPosition();
+			request.setAttribute("positions",  positions);
+
+//			User editUser = new UserService().getUser(id);
 //			request.setAttribute("editUser", editUser);
 
-//			User editUser = getEditUser(request);
+			User editUser = getEditUser(request, messages);
+
 			request.setAttribute("editUser", editUser);
+
 			session.setAttribute("errorMessages", messages);
 //			response.sendRedirect("userSetting");
 			request.getRequestDispatcher("userSetting.jsp").forward(request, response);
 		}
 	}
 
-	private User getEditUser(HttpServletRequest request)
+	private User getEditUser(HttpServletRequest request, List<String> messages)
 			throws IOException, ServletException {
 
 //		HttpSession session = request.getSession();
@@ -108,7 +110,6 @@ public class UserSettingServlet extends HttpServlet {
 		User editUser = new UserService().getUser(id);
 
 //		User editUser = (User) request.getAttribute("editUser");
-		System.out.println(editUser);
 //		String password = request.getParameter("password");
 
 		editUser.setLogin_id(request.getParameter("login_id"));
