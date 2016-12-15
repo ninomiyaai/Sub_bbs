@@ -81,4 +81,8 @@ public class MessageService {
 			close(connection);
 		}
 	}
+
+	getOld
+
+	getNew
 }
