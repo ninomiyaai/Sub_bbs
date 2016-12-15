@@ -30,6 +30,8 @@ import bbs.exception.SQLRuntimeException;public class UserMessageDao {
 
 			ps.setString(1, oldDate);
 			ps.setString(2, newDate);
+
+
 			if (!(StringUtils.isEmpty(category))) {
 				ps.setString(3, category);
 			}

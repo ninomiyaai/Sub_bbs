@@ -31,6 +31,17 @@ public class HomeServlet extends HttpServlet {
 		String oldDate = request.getParameter("oldDate");
 		String newDate = request.getParameter("newDate");
 
+		System.out.println(newDate);
+
+		if (StringUtils.isEmpty(oldDate)) {
+//			oldDate = "2000-01-01";
+			oldDate = new MessageService().getOldDate().getCreated_at().toString();
+		}
+		if (StringUtils.isEmpty(newDate)) {
+//			newDate = "2016-12-15";
+			newDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		}
+
 		// 一覧を取得する処理
 		List<UserMessage> messages = new MessageService().getMessage(category, oldDate, newDate);
 		List<UserComment> comments = new CommentService().getComment();
@@ -43,36 +54,8 @@ public class HomeServlet extends HttpServlet {
 		request.setAttribute("category", category);
 		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
-		if (!(StringUtils.isEmpty(oldDate))) {
-			request.setAttribute("oldDate", oldDate);
-		} else {
-			String created_at = new MessageService().getOldDate().getCreated_at().toString();
-			oldDate = created_at;
-		}
-
-		if (!(StringUtils.isEmpty(newDate))) {
-			request.setAttribute("newDate", newDate);
-		} else {
-			String created_at = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-			newDate = created_at;
-		}
-
 		request.getRequestDispatcher("home.jsp").forward(request,response);
 	}
-
-//	private Message getChoice(HttpServletRequest request, List<Message> category)
-//			throws IOException, ServletException {
-//
-//		HttpSession session = request.getSession();
-//		Message choice = (Message) session.getAttribute("choice");
-//		if (choice == null) {
-//			 choice = new Message();
-//		}
-//
-//		choice.setCategory(request.getParameter("category"));
-//
-//		return choice;
-//	}
 
 }
 

@@ -32,57 +32,32 @@
 </c:if>
 
 <div class="narrowing">
-<form action="./" method="get"><br />
-	<p>
-	<label for="category">カテゴリー</label>
-	<select name="category">
-		<option value=""></option>
-		<c:forEach items="${categories}" var="c">
-			<c:if test="${c.category != category}">
-				<option value="${c.category}">${c.category}</option>
-			</c:if>
-			<c:if test="${c.category == category}">
-				<option value="${c.category}" selected>${c.category}</option>
-			</c:if>
-		</c:forEach>
-	</select>
-	</p>
+	<form action="./" method="get"><br />
 
-	<p>
-	<label for="category">投稿日時</label>
-	<select name="category">
-		<option value=""></option>
-		<c:forEach items="${categories}" var="c">
-		<c:if test="${c.category != category}">
-			<option value="${c.category}">${c.category}</option>
-		</c:if>
-		<c:if test="${c.category == category}">
-			<option value="${c.category}" selected>${c.category}</option>
-		</c:if>
-		</c:forEach>
+		<p>
+		<label for="category">カテゴリー</label>
+		<select name="category">
+			<option value=""></option>
+			<c:forEach items="${categories}" var="c">
+				<c:if test="${c.category != category}">
+					<option value="${c.category}">${c.category}</option>
+				</c:if>
+				<c:if test="${c.category == category}">
+					<option value="${c.category}" selected>${c.category}</option>
+				</c:if>
+			</c:forEach>
+		</select>
+		</p>
 
-	</select>
-	</p>
+		<p>
+		<label for="oldDate">投稿日時</label>
+			<input type="date" name="oldDate" value="${oldDate}">
+		<label for="newDate">～</label>
+			<input type="date" name="newDate" value="${newDate}">
+		</p>
 
-	<p>
-	<label for="category">～</label>
-	<select name="category">
-		<option value=""></option>
-		<c:forEach items="${categories}" var="c">
-		<c:if test="${c.category != category}">
-			<option value="${c.category}">${c.category}</option>
-		</c:if>
-		<c:if test="${c.category == category}">
-			<option value="${c.category}" selected>${c.category}</option>
-		</c:if>
-		</c:forEach>
-
-	</select>
-	</p>
-
-	<input type="submit" value="検索"/> <br /> <br />
-
-</form>
+		<input type="submit" value="検索"/> <br /> <br />
+	</form>
 </div>
 
 <div class="messages">
