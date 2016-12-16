@@ -66,11 +66,12 @@ public class CommentServlet extends HttpServlet {
 
 		String text = request.getParameter("text");
 
-		if (StringUtils.isEmpty(text) == true) {
-			comments.add("件名を入力してください");
-		}
-		if (500 < text.length()) {
-			comments.add("500文字以下で入力してください");
+		if (StringUtils.isBlank(text) == true) {
+			comments.add("コメントを入力してください");
+		} else {
+			if (500 < text.length()) {
+				comments.add("コメントは500文字以下で入力してください");
+			}
 		}
 		if (comments.size() == 0) {
 			return true;

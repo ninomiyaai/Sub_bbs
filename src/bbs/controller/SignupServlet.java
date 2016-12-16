@@ -107,24 +107,44 @@ public class SignupServlet extends HttpServlet {
 		String position_id = request.getParameter("position_id");
 		String name = request.getParameter("name");
 
+		User existingUser = new UserService().getUser(login_id);
+
+
 		if (StringUtils.isEmpty(login_id) == true) {
 			messages.add("ログインIDを入力してください");
+		} else {
+			if (!(login_id.matches("^[0-9a-zA-Z]{6,20}$"))) {
+				messages.add("ログインIDは6～20文字の半英数字で入力してください");
+			} else {
+				if (!(existingUser == null)) {
+					messages.add("既存のログインIDです");
+				}
+			}
 		}
+		System.out.println(password);
+		System.out.println(confirm_password);
 		if (StringUtils.isEmpty(password) == true) {
 			messages.add("パスワードを入力してください");
 		} else {
 			if (StringUtils.isEmpty(confirm_password) == true) {
-				messages.add("パスワードが一致しません");
+				messages.add("パスワードは確認のため2箇所に入力してください");
 			} else {
 				if ((password.equals(confirm_password)) == false) {
-					messages.add("パスワードが一致しません");
+					messages.add("パスワードと確認用パスワードが一致しません");
+				} else {
+					if (!(password.matches("^[!-~]{6,255}$"))) {
+						messages.add("パスワードは6～255文字の半角文字(記号可)で入力してください");
+					}
 				}
 			}
 		}
 
-
-		if (StringUtils.isEmpty(name) == true) {
+		if (StringUtils.isBlank(name) == true) {
 			messages.add("名前を入力してください");
+		} else {
+			if (!(name.length() <= 10)) {
+				messages.add("名前は10文字以下で入力してください");
+			}
 		}
 		if (StringUtils.isEmpty(branch_id) == true) {
 			messages.add("支店を選択してください");

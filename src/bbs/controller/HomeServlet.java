@@ -52,6 +52,8 @@ public class HomeServlet extends HttpServlet {
 		request.setAttribute("comments",  comments);
 		request.setAttribute("categories", categories);
 		request.setAttribute("category", category);
+		request.setAttribute("oldDate", oldDate);
+		request.setAttribute("newDate", newDate);
 		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
 		request.getRequestDispatcher("home.jsp").forward(request,response);

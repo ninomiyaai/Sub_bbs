@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -33,32 +32,33 @@ public class NewMessageServlet extends HttpServlet {
 			HttpServletResponse response) throws IOException, ServletException {
 
 		List<String> messages = new ArrayList<String>();
-		HttpSession session = request.getSession();
+//		HttpSession session = request.getSession();
 
 		if (isValid(request, messages) == true) {
 
 			Message message = getMessage(request, messages);
-			session.setAttribute("message", message);
+			request.setAttribute("message", message);
 
 			new MessageService().register(message);
 
-			session.removeAttribute("message");
+//			session.removeAttribute("message");
 			response.sendRedirect("./");
 		} else {
 			Message message = getMessage(request, messages);
-			session.setAttribute("message", message);
-			session.setAttribute("errorMessages", messages);
+			request.setAttribute("message", message);
+			request.setAttribute("errorMessages", messages);
 
-			response.sendRedirect("newMessage");
+//			response.sendRedirect("newMessage");
+			request.getRequestDispatcher("newMessage").forward(request, response);
 		}
 	}
 
 	private Message getMessage(HttpServletRequest request, List<String> messages)
 			throws IOException, ServletException {
 
-		HttpSession session = request.getSession();
-		Message message = (Message) session.getAttribute("message");
-		User loginUser = (User) session.getAttribute("loginUser");
+//		HttpSession session = request.getSession();
+		Message message = (Message) request.getAttribute("message");
+		User loginUser = (User) request.getAttribute("loginUser");
 		if ( message == null) {
 			 message = new Message();
 		}
@@ -76,23 +76,26 @@ public class NewMessageServlet extends HttpServlet {
 		String text = request.getParameter("text");
 		String category = request.getParameter("category");
 
-		if (StringUtils.isEmpty(title) == true) {
+		if (StringUtils.isBlank(title) == true) {
 			messages.add("件名を入力してください");
+		} else {
+			if ( 50 < title.length()) {
+				messages.add("件名は50文字以下で入力してください");
+			}
 		}
-		if ( 50 < title.length()) {
-			messages.add("件名は50文字以下で入力してください");
-		}
-		if (StringUtils.isEmpty(text) == true) {
+		if (StringUtils.isBlank(text) == true) {
 			messages.add("本文を入力してください");
+		} else {
+			if ( 1000 < text.length()) {
+				messages.add("本文は1000文字以下で入力してください");
+			}
 		}
-		if ( 1000 < text.length()) {
-			messages.add("本文は1000文字以下で入力してください");
-		}
-		if (StringUtils.isEmpty(category) == true) {
+		if (StringUtils.isBlank(category) == true) {
 			messages.add("カテゴリーを入力してください");
-		}
-		if ( 10 < category.length()) {
-			messages.add("カテゴリーは10文字以下で入力してください");
+		} else {
+			if ( 10 < category.length()) {
+				messages.add("カテゴリーは10文字以下で入力してください");
+			}
 		}
 
 		if (messages.size() == 0) {
