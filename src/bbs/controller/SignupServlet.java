@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -43,7 +42,7 @@ public class SignupServlet extends HttpServlet {
 
 
 		List<String> messages = new ArrayList<String>();
-		HttpSession session = request.getSession();
+
 
 //		User signupUser = getSignupUser(request, messages);
 //		session.setAttribute("signupUser", signupUser);
@@ -66,7 +65,7 @@ public class SignupServlet extends HttpServlet {
 			User signupUser = getSignupUser(request, messages);
 
 			request.setAttribute("signupUser", signupUser);
-			session.setAttribute("errorMessages", messages);
+			request.setAttribute("errorMessages", messages);
 
 			request.getRequestDispatcher("signup.jsp").forward(request, response);
 //			response.sendRedirect("signup");

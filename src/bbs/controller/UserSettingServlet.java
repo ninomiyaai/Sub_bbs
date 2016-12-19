@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -60,7 +59,7 @@ public class UserSettingServlet extends HttpServlet {
 
 
 		List<String> messages = new ArrayList<String>();
-		HttpSession session = request.getSession();
+//		HttpSession session = request.getSession();
 
 
 		if (isValid(request, messages) == true) {
@@ -83,7 +82,7 @@ public class UserSettingServlet extends HttpServlet {
 
 			request.setAttribute("editUser", editUser);
 
-			session.setAttribute("errorMessages", messages);
+			request.setAttribute("errorMessages", messages);
 			request.getRequestDispatcher("userSetting.jsp").forward(request, response);
 		}
 	}
@@ -159,6 +158,10 @@ public class UserSettingServlet extends HttpServlet {
 			messages.add("役職を選択してください");
 		}
 
+		try {
+			Integer.parseInt(request.getParameter("user_id"));
+		} catch (NumberFormatException e){
+		}
 		try {
 			Integer.parseInt(request.getParameter("branch_id"));
 		} catch (NumberFormatException e){

@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 		LoginService loginService = new LoginService();
 		User user = loginService.login(login_id, password);
 
-//		System.out.println(user);
+		System.out.println(user);
 
 		HttpSession session = request.getSession();
 		if (user != null) {
@@ -48,24 +48,13 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			List<String> messages = new ArrayList<String>();
 			messages.add("ログインに失敗しました。");
-			session.setAttribute("errorMessages", messages);
+			request.setAttribute("errorMessages", messages);
 
-			session.setAttribute("login_id", login_id);
-			response.sendRedirect("login");
+			request.setAttribute("login_id", login_id);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
 
 		}
 	}
 
-//	private User getDeletedUser(HttpServletRequest request)
-//			throws IOException, ServletException {
-//
-//		String login_id = request.getParameter("login_id");
-//
-//		User user = new User();
-//		user.setLogin_id(login_id);
-//		user.setDeleted(Integer.parseInt(request.getParameter("deleted")));
-//
-//		return user;
-//	}
 
 }

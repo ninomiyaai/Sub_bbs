@@ -12,7 +12,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bbs.beans.User;
@@ -26,31 +25,37 @@ public class AuthorityFilter implements Filter {
 
 		StringBuffer requestUrl = ((HttpServletRequest) request).getRequestURL();
 		String requestUrlStr = requestUrl.toString();
-
-
 //		System.out.println(requestUrlStr);
 
 		//キャスト
 		HttpSession session = ((HttpServletRequest)request).getSession();
 
 		User user = (User)session.getAttribute("loginUser");
+		System.out.println(user);
+//
+//		if (user == null) {
+//			((HttpServletResponse)response).sendRedirect("login");
+//			return;
+//		} else {
+		if (user != null) {
+			if ((requestUrlStr.endsWith("/userControl"))
+					|| (requestUrlStr.endsWith("/userSetting"))
+						|| (requestUrlStr.endsWith("/signup"))) {
 
-		if (requestUrlStr.endsWith("/userControl")
-				|| requestUrlStr.endsWith("/userSetting")
-					|| requestUrlStr.endsWith("/signup")) {
+				if (!(((user.getBranch_id()) == 1) && ((user.getPosition_id()) == 4))) {
 
-			if (!(((user.getBranch_id()) == 1) && ((user.getPosition_id()) == 4))) {
+					List<String> messages = new ArrayList<String>();
+					messages.add("権限を持っていません。");
+					request.setAttribute("errorMessages", messages);
 
-				List<String> messages = new ArrayList<String>();
-				messages.add("権限を持っていません。");
-				session.setAttribute("errorMessages", messages);
+//					((HttpServletResponse)response).sendRedirect("./");
+					request.getRequestDispatcher("./").forward(request,response);
 
-				((HttpServletResponse)response).sendRedirect("./");
-
-				return;
+					return;
+				}
 			}
 		}
-
+//		}
 		chain.doFilter(request, response);
 
 	}

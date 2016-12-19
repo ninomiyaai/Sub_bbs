@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>ログイン</title>
+	<title>ログイン画面</title>
 	<link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -21,7 +21,6 @@
 			</c:forEach>
 		</ul>
 	</div>
-	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 
 <form action="login" method="post"><br />
@@ -29,12 +28,10 @@
 	<input name="login_id" value="${login_id}" id="login_id"/> <br />
 
 	<label for="password">パスワード</label>
-	<input name="password" type="password" id="password"/> <br />
+	<input name="password" type="password" id="password"/> <br /><br />
 
 	<input type="submit" value="ログイン" /> <br />
 </form>
-
-<c:remove var="login_id" scope="session"/>
 </div>
 </body>
 </html>

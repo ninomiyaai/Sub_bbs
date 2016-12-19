@@ -21,20 +21,19 @@
 			</c:forEach>
 		</ul>
 	</div>
-	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 
 <form action="newMessage" method="post"><br />
 
+	<input type="hidden" name="user_id" value="${loginUser.id}">
+
 	件名<br />
-	<textarea name="title" id="title" cols="70" rows="3" class="title-box">${message.title}</textarea><br /><br />
+	<input type="text" name="title" id="title" value="${message.title}"><br /><br />
 	本文<br />
 	<textarea name="text" id="text"cols="70" rows="8" class="text-box">${message.text}</textarea><br /><br />
 
-	<label for="category">カテゴリー</label>
-	<input name="category" value="${message.category}" id="category"/> <br />
-
-	<c:remove var="message" scope="session"/>
+	カテゴリー<br />
+	<input name="category" value="${message.category}" id="category"/> <br /><br />
 
 	<input type="submit" value="投稿" /> <br /> <br />
 	<a href="./">戻る</a>

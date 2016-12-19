@@ -20,17 +20,16 @@
 			</c:forEach>
 		</ul>
 	</div>
-	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 <form action="signup" method="post"><br />
 
 	<label for="login_id">ログインID</label>
-	<input name="login_id" value="${signupUser.login_id}" id="login_id"/> <br />
+	<input name="login_id" value="${signupUser.login_id}" id="login_id"/> <br /><br />
 
 	<label for="password">パスワード</label>
-	<input name="password" type="password" id="password"/> <br />
+	<input name="password" type="password" id="password"/> <br /><br />
 	<label for="password">パスワード(確認)</label>
-	<input name="confirm_password" type="password" id="confirm_password"/> <br />
+	<input name="confirm_password" type="password" id="confirm_password"/> <br /><br />
 
 	<label for="name">名前</label>
 	<input name="name" value="${signupUser.name}" id="name"/> <br />

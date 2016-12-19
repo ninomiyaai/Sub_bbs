@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import bbs.beans.Message;
 import bbs.beans.User;
 import bbs.service.MessageService;
+import bbs.service.UserService;
 
 @WebServlet(urlPatterns = { "/newMessage" })
 public class NewMessageServlet extends HttpServlet {
@@ -39,26 +40,30 @@ public class NewMessageServlet extends HttpServlet {
 			Message message = getMessage(request, messages);
 			request.setAttribute("message", message);
 
+
 			new MessageService().register(message);
 
-//			session.removeAttribute("message");
+
 			response.sendRedirect("./");
 		} else {
 			Message message = getMessage(request, messages);
 			request.setAttribute("message", message);
+//			session.setAttribute("errorMessages", messages);
 			request.setAttribute("errorMessages", messages);
 
-//			response.sendRedirect("newMessage");
-			request.getRequestDispatcher("newMessage").forward(request, response);
+			request.getRequestDispatcher("newMessage.jsp").forward(request, response);
 		}
 	}
 
 	private Message getMessage(HttpServletRequest request, List<String> messages)
 			throws IOException, ServletException {
 
-//		HttpSession session = request.getSession();
 		Message message = (Message) request.getAttribute("message");
-		User loginUser = (User) request.getAttribute("loginUser");
+
+		int id = (Integer.parseInt(request.getParameter("user_id")));
+		System.out.println(id);
+		User loginUser = new UserService().getUser(id);
+
 		if ( message == null) {
 			 message = new Message();
 		}

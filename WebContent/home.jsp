@@ -3,6 +3,7 @@
 <%@ page isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -28,7 +29,6 @@
 			</c:forEach>
 		</ul>
 	</div>
-	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 
 <div class="narrowing">
@@ -63,25 +63,32 @@
 <div class="messages">
 	<c:forEach items="${messages}" var="message">
 		<hr><hr>
-		<div class="title"><c:out value="${message.title}" /></div>
-		<div class="text"><c:out value="${message.text}" /></div>
-		<div class="name"><c:out value="${message.name}" /></div>
-		<div class="category"><c:out value="${message.category}" /></div>
+		<div class="title"><h4 style="display:inline;">件名：</h4><c:out value="${message.title}" /></div>
+
+		<div class="text"><h4 style="display:inline;">本文：</h4>
+		<c:forEach var="s" items="${fn:split(message.text, '
+		')}"><div>${s}</div></c:forEach></div>
+
+		<div class="name"><h4 style="display:inline;">投稿者：</h4><c:out value="${message.name}" /></div>
+		<div class="category"><h4 style="display:inline;">カテゴリー：</h4><c:out value="${message.category}" /></div>
 		<div class="created_at"><fmt:formatDate value="${message.created_at}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
 		<div class="comments">
 			<c:forEach items="${comments}" var="comment">
 				<c:if test="${message.id == comment.message_id}">
 					<hr>
-					<div class="text"><p><c:out value="${comment.text}" /></p></div>
-					<div class="name"><c:out value="${comment.name}" /></div>
+					<div class="text"><h4 style="display:inline;">コメント：</h4>
+					<c:forEach var="s" items="${fn:split(comment.text, '
+					')}"><div>${s}</div></c:forEach></div>
+					<div class="name"><h4 style="display:inline;">投稿者：</h4><c:out value="${comment.name}" /></div>
 					<div class="created_at"><fmt:formatDate value="${comment.created_at}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
 				</c:if>
 			</c:forEach>
-			コメント<br />
+			<hr>
+			<label style="display:inline;">コメント</label>
 			<form action="comment" method="post">
 				<input type="hidden" name="message_id" value="${message.id}">
 				<textarea name="text" cols="50" rows="5" class="text-box"><c:out value="${comment.text}" /></textarea><br /><br />
-				<input type="submit" value="コメントを送信する">
+				<input type="submit" value="コメントを投稿">
 			</form>
 		</div>
 	</c:forEach>
