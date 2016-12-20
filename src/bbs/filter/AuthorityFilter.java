@@ -45,7 +45,7 @@ public class AuthorityFilter implements Filter {
 				if (!(((user.getBranch_id()) == 1) && ((user.getPosition_id()) == 4))) {
 
 					List<String> messages = new ArrayList<String>();
-					messages.add("権限を持っていません。");
+					messages.add("権限を持っていません");
 					request.setAttribute("errorMessages", messages);
 
 //					((HttpServletResponse)response).sendRedirect("./");

@@ -1,6 +1,8 @@
 package bbs.filter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -10,7 +12,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bbs.beans.User;
@@ -40,7 +41,12 @@ public class LoginFilter implements Filter {
 
 		if (user == null) {
 //			System.out.println("ccc");
-			((HttpServletResponse)response).sendRedirect("login");
+			List<String> messages = new ArrayList<String>();
+			messages.add("不正なアクセスです");
+			request.setAttribute("errorMessages", messages);
+
+//			((HttpServletResponse)response).sendRedirect("./");
+			request.getRequestDispatcher("login").forward(request,response);
 			return;
 		}
 		chain.doFilter(request, response);

@@ -32,42 +32,71 @@
 </head>
 <body>
 <h3>ユーザー管理</h3>
-<div class="main-contents">
 
-	<div class="header">
-		<a href="./"></a>
-		<a href="signup">ユーザー新規登録</a>
-		<a href="./">戻る</a>
+
+<div class="header">
+	<a href="./"></a>
+	<a href="signup">ユーザー新規登録</a>
+	<a href="./">戻る</a>
+</div>
+
+<c:if test="${ not empty errorMessages }">
+	<div class="errorMessages" style="color:red">
+		<ul>
+			<c:forEach items="${errorMessages}" var="message">
+				<li><c:out value="${message}" />
+			</c:forEach>
+		</ul>
 	</div>
+</c:if>
 
-	<div class="users"><br><br>
-		<table rules="all" frame="box" cellpadding="10">
+
+<div class="main-contents"><br><br>
+	<table rules="all" frame="box" cellpadding="10">
+		<tr>
+			<th>ログインID</th>
+			<th>名前</th>
+			<th>支店</th>
+			<th>役職</th>
+			<th>状態</th>
+			<th>編集</th>
+		</tr>
+		<c:forEach items="${users}" var="users">
 			<tr>
-				<th>ログインID</th>
-				<th>名前</th>
-				<th>編集</th>
-				<th>状態</th>
-			</tr>
-			<c:forEach items="${users}" var="users">
-				<tr>
-					<td><div class="login_id"><c:out value="${users.login_id}" /></div></td>
-					<td><div class="name"><c:out value="${users.name}" /></div></td>
-					<td><input type="submit" value="編集" onClick="location.href='userSetting?id=${users.id}'"></td>
-					<form action="userControl" method="post" onSubmit="return check(${users.deleted})">
-						<input type="hidden" name="user_id" value="${users.id}">
-						<c:if test="${users.deleted == 0}">
-							<input type="hidden" name="deleted" value="1">
-							<td><input type="submit" name="deleted" value="アカウントを停止" id="deleted"></td>
+				<td><div class="login_id"><c:out value="${users.login_id}" /></div></td>
+				<td><div class="name"><c:out value="${users.name}" /></div></td>
+
+				<c:forEach items="${branches}"  var="branch">
+					<c:if test="${branch.id == users.branch_id}">
+						<td><div class="branch"><c:out value="${branch.name}" /></div></td>
+					</c:if>
+				</c:forEach>
+				<c:forEach items="${positions}"  var="position">
+					<c:if test="${position.id == users.position_id}">
+						<td><div class="position"><c:out value="${position.name}" /></div></td>
+					</c:if>
+				</c:forEach>
+
+				<form action="userControl" method="post" onSubmit="return check(${users.deleted})">
+					<input type="hidden" name="user_id" value="${users.id}">
+					<td>
+						<c:if test="${users.id != loginUser.id}">
+							<c:if test="${users.deleted == 0}">
+								<input type="hidden" name="deleted" value="1">
+								<input type="submit" name="deleted" value="アカウントを停止" id="deleted">
+							</c:if>
 						</c:if>
 						<c:if test="${users.deleted == 1}">
 							<input type="hidden" name="deleted" value="0">
-							<td><input type="submit" name="deleted" value="アカウントを復活" id="deleted"></td>
+							<input type="submit" name="deleted" value="アカウントを復活" id="deleted">
 						</c:if>
-					</form>
-				</tr>
-			</c:forEach>
-		</table>
-	</div>
+					</td>
+				</form>
+
+				<td><input type="submit" value="編集" onClick="location.href='userSetting?id=${users.id}'"></td>
+			</tr>
+		</c:forEach>
+	</table>
 </div>
 </body>
 </html>

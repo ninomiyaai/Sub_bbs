@@ -21,7 +21,7 @@ public class UserCommentDao {
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT * FROM user_comment ");
-			sql.append("ORDER BY created_at DESC limit " + num);
+			sql.append("ORDER BY created_at ASC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());
 

@@ -9,7 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bbs.beans.Branch;
+import bbs.beans.Position;
 import bbs.beans.User;
+import bbs.service.BranchService;
+import bbs.service.PositionService;
 import bbs.service.UserService;
 
 @WebServlet(urlPatterns = { "/userControl" })
@@ -22,6 +26,11 @@ public class UserControlServlet extends HttpServlet {
 
 		List<User> users = new UserService().getUsers();
 		request.setAttribute("users",  users);
+
+		List<Branch> branches = new BranchService().getBranch();
+		request.setAttribute("branches",  branches);
+		List<Position> positions = new PositionService().getPosition();
+		request.setAttribute("positions",  positions);
 
 		request.getRequestDispatcher("/userControl.jsp").forward(request,response);
 	}

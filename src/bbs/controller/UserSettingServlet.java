@@ -41,6 +41,24 @@ public class UserSettingServlet extends HttpServlet {
 
 //		HttpSession session = request.getSession();
 
+		try {
+			Integer.parseInt(request.getParameter("id"));
+		} catch (NumberFormatException e){
+			List<String> messages = new ArrayList<String>();
+
+			messages.add("不正なアクセスです");
+			System.out.println("不正なアクセスです");
+//			isValid(request, messages);
+
+
+			List<User> users = new UserService().getUsers();
+			request.setAttribute("users",  users);
+
+			request.setAttribute("errorMessages", messages);
+			request.getRequestDispatcher("userControl.jsp").forward(request, response);
+
+			return;
+		}
 
 		int id = (Integer.parseInt(request.getParameter("id")));
 
@@ -98,6 +116,11 @@ public class UserSettingServlet extends HttpServlet {
 		editUser.setPassword(request.getParameter("password"));
 		editUser.setName(request.getParameter("name"));
 		try {
+			editUser.setId(Integer.parseInt(request.getParameter("user_id")));
+		} catch (NumberFormatException e) {
+			editUser.setBranch_id(0);
+		}
+		try {
 			editUser.setBranch_id(Integer.parseInt(request.getParameter("branch_id")));
 		} catch (NumberFormatException e) {
 			editUser.setBranch_id(0);
@@ -119,8 +142,11 @@ public class UserSettingServlet extends HttpServlet {
 		String branch_id = request.getParameter("branch_id");
 		String position_id = request.getParameter("position_id");
 
+		System.out.println(branch_id);
+
 		int id = (Integer.parseInt(request.getParameter("user_id")));
 		User existingUser = new UserService().getUser(login_id);
+//		User editUser = new UserService().getUser(id);
 
 		if (StringUtils.isEmpty(login_id) == true) {
 			messages.add("ログインIDを入力してください");
@@ -153,15 +179,28 @@ public class UserSettingServlet extends HttpServlet {
 		}
 		if (StringUtils.isEmpty(branch_id) == true) {
 			messages.add("支店を選択してください");
+//		} else {
+//			if (((editUser.getBranch_id()) == 1) && ((editUser.getPosition_id()) == 4)) {
+//				if ((Integer.parseInt(request.getParameter("branch_id"))) != editUser.getBranch_id()) {
+//					messages.add("当該ユーザーの支店は変更不可です");
+//				}
+//			}
 		}
 		if (StringUtils.isEmpty(position_id) == true) {
 			messages.add("役職を選択してください");
+//		} else {
+//			if (((editUser.getBranch_id()) == 1) && ((editUser.getPosition_id()) == 4)) {
+//				if ((Integer.parseInt(request.getParameter("position_id"))) != editUser.getPosition_id()) {
+//					messages.add("当該ユーザーの役職は変更不可です");
+//				}
+//			}
 		}
-
-		try {
-			Integer.parseInt(request.getParameter("user_id"));
-		} catch (NumberFormatException e){
-		}
+//		try {
+//			Integer.parseInt(request.getParameter("user_id"));
+//		} catch (NumberFormatException e){
+//			messages.add("不正なアクセスです");
+//			System.out.println("不正なアクセスです");
+//		}
 		try {
 			Integer.parseInt(request.getParameter("branch_id"));
 		} catch (NumberFormatException e){

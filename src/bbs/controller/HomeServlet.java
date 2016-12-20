@@ -31,7 +31,7 @@ public class HomeServlet extends HttpServlet {
 		String oldDate = request.getParameter("oldDate");
 		String newDate = request.getParameter("newDate");
 
-		System.out.println(newDate);
+//		System.out.println(newDate);
 
 		if (StringUtils.isEmpty(oldDate)) {
 //			oldDate = "2000-01-01";
@@ -43,7 +43,8 @@ public class HomeServlet extends HttpServlet {
 		}
 
 		// 一覧を取得する処理
-		List<UserMessage> messages = new MessageService().getMessage(category, oldDate, newDate);
+		List<UserMessage> messages = new MessageService().getMessage
+				(category, oldDate + " 00:00:00", newDate + " 23:59:59");
 		List<UserComment> comments = new CommentService().getComment();
 		List<Message> categories = new MessageService().getCategories();
 
@@ -52,9 +53,11 @@ public class HomeServlet extends HttpServlet {
 		request.setAttribute("comments",  comments);
 		request.setAttribute("categories", categories);
 		request.setAttribute("category", category);
+		System.out.println(oldDate);
 		request.setAttribute("oldDate", oldDate);
+		System.out.println(newDate);
 		request.setAttribute("newDate", newDate);
-		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+//		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
 		request.getRequestDispatcher("home.jsp").forward(request,response);
 	}
