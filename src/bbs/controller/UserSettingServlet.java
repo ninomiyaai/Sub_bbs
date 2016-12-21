@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -39,13 +40,12 @@ public class UserSettingServlet extends HttpServlet {
 //
 //		System.out.println(users);
 
-//		HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
+		List<String> messages = new ArrayList<String>();
 
 		try {
 			Integer.parseInt(request.getParameter("id"));
 		} catch (NumberFormatException e){
-			List<String> messages = new ArrayList<String>();
-
 			messages.add("不正なアクセスです");
 			System.out.println("不正なアクセスです");
 //			isValid(request, messages);
@@ -54,8 +54,8 @@ public class UserSettingServlet extends HttpServlet {
 			List<User> users = new UserService().getUsers();
 			request.setAttribute("users",  users);
 
-			request.setAttribute("errorMessages", messages);
-			request.getRequestDispatcher("userControl.jsp").forward(request, response);
+			session.setAttribute("errorMessages", messages);
+			response.sendRedirect("userControl");
 
 			return;
 		}
@@ -64,10 +64,20 @@ public class UserSettingServlet extends HttpServlet {
 
 	//	if (session.getAttribute("editUser") == null) {
 			User editUser = new UserService().getUser(id);
-			request.setAttribute("editUser", editUser);
+
+			if (editUser == null) {
+				messages.add("指定のアカウントは存在しません");
+				session.setAttribute("errorMessages", messages);
+
+				request.setAttribute("editUser", editUser);
+				response.sendRedirect("userControl");
+
+				return;
+			}
 	//	}
 	// ↑ のこしとく
 
+		request.setAttribute("editUser", editUser);
 		request.getRequestDispatcher("userSetting.jsp").forward(request, response);
 	}
 

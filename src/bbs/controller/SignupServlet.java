@@ -55,7 +55,7 @@ public class SignupServlet extends HttpServlet {
 			new UserService().register(signupUser);
 //			session.removeAttribute("signupUser");
 
-			response.sendRedirect("./");
+			response.sendRedirect("userControl");
 		} else {
 			List<Branch> branches = new BranchService().getBranch();
 			request.setAttribute("branches",  branches);

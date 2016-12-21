@@ -8,7 +8,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ユーザー管理画面</title>
-<link href="./css/style.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 	<!--
 		function check(type){
@@ -48,6 +47,7 @@
 			</c:forEach>
 		</ul>
 	</div>
+	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 
 

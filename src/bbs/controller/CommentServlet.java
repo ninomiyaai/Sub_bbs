@@ -1,9 +1,7 @@
 package bbs.controller;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -16,12 +14,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 
 import bbs.beans.Comment;
-import bbs.beans.Message;
 import bbs.beans.User;
-import bbs.beans.UserComment;
-import bbs.beans.UserMessage;
 import bbs.service.CommentService;
-import bbs.service.MessageService;
 
 @WebServlet(urlPatterns = { "/comment" })
 public class CommentServlet extends HttpServlet {
@@ -31,7 +25,7 @@ public class CommentServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
 
-//		HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
 		List<String> messages = new ArrayList<String>();
 
 		if (isValid(request, messages) == true) {
@@ -40,43 +34,45 @@ public class CommentServlet extends HttpServlet {
 
 			new CommentService().register(comment);
 
-//			session.removeAttribute("message");
+			session.removeAttribute("message");
 			response.sendRedirect("./");
 		} else {
 			Comment comment = getComment(request, messages);
 			request.setAttribute("comment", comment);
-			request.setAttribute("errorMessages", messages);
+			session.setAttribute("errorMessages", messages);
 
-			String category = request.getParameter("category");
-			String oldDate = request.getParameter("oldDate");
-			String newDate = request.getParameter("newDate");
+//			String category = request.getParameter("category");
+//			String oldDate = request.getParameter("oldDate");
+//			String newDate = request.getParameter("newDate");
+//
+//			System.out.println(newDate);
+//
+//			if (StringUtils.isEmpty(oldDate)) {
+////				oldDate = "2000-01-01";
+//				oldDate = new MessageService().getOldDate().getCreated_at().toString();
+//			}
+//			if (StringUtils.isEmpty(newDate)) {
+////				newDate = "2016-12-15";
+//				newDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+//			}
+//
+//			// 一覧を取得する処理
+//			List<UserMessage> userMessages = new MessageService().getMessage(category, oldDate, newDate);
+//			List<UserComment> comments = new CommentService().getComment();
+//			List<Message> categories = new MessageService().getCategories();
+//
+//			// JSPに渡す処理
+//			request.setAttribute("messages",  userMessages);
+//			request.setAttribute("comments",  comments);
+//			request.setAttribute("categories", categories);
+//			request.setAttribute("category", category);
+//			request.setAttribute("oldDate", oldDate);
+//			request.setAttribute("newDate", newDate);
+//			System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
-			System.out.println(newDate);
+//			request.getRequestDispatcher("home.jsp").forward(request, response);
+			response.sendRedirect("./");
 
-			if (StringUtils.isEmpty(oldDate)) {
-//				oldDate = "2000-01-01";
-				oldDate = new MessageService().getOldDate().getCreated_at().toString();
-			}
-			if (StringUtils.isEmpty(newDate)) {
-//				newDate = "2016-12-15";
-				newDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-			}
-
-			// 一覧を取得する処理
-			List<UserMessage> userMessages = new MessageService().getMessage(category, oldDate, newDate);
-			List<UserComment> comments = new CommentService().getComment();
-			List<Message> categories = new MessageService().getCategories();
-
-			// JSPに渡す処理
-			request.setAttribute("messages",  userMessages);
-			request.setAttribute("comments",  comments);
-			request.setAttribute("categories", categories);
-			request.setAttribute("category", category);
-			request.setAttribute("oldDate", oldDate);
-			request.setAttribute("newDate", newDate);
-			System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-
-			request.getRequestDispatcher("home.jsp").forward(request, response);
 		}
 	}
 

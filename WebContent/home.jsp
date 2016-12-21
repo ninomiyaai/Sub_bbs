@@ -9,7 +9,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>掲示板ホーム画面</title>
-<link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h3>掲示板</h3>
@@ -29,8 +28,9 @@
 			</c:forEach>
 		</ul>
 	</div>
+	<c:remove var="message"/>
 </c:if>
-<c:remove var="message"/>
+
 
 <div class="narrowing">
 	<form action="./" method="get"><br />
@@ -54,7 +54,7 @@
 		<label for="oldDate">投稿日時</label>
 			<input type="date" name="oldDate" value="${oldDate}">
 		<label for="newDate">～</label>
-			<input type= name="newDate" value="${newDate}">
+			<input type="date" name="newDate" value="${newDate}">
 		</p>
 
 		<input type="submit" value="検索" />
@@ -67,9 +67,9 @@
 		<hr><hr>
 		<div class="title"><h4 style="display:inline;">件名：</h4><c:out value="${message.title}" /></div>
 
-		<div class="text"><h4 style="display:inline;">本文：</h4>
+		<div class="text"><h4 style="display:inline;">本文：</h4><br />
 		<c:forEach var="s" items="${fn:split(message.text, '
-		')}"><c:out value="${s}" /></c:forEach></div>
+		')}"><c:out value="${s}" /><br /></c:forEach></div>
 
 		<div class="name"><h4 style="display:inline;">投稿者：</h4><c:out value="${message.name}" /></div>
 		<div class="category"><h4 style="display:inline;">カテゴリー：</h4><c:out value="${message.category}" /></div>

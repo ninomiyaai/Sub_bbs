@@ -7,7 +7,6 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>ログイン画面</title>
-	<link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h3>ログイン</h3>
@@ -21,6 +20,7 @@
 			</c:forEach>
 		</ul>
 	</div>
+	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 
 <div class="main-contents">

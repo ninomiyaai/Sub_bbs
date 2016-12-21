@@ -44,6 +44,7 @@ public class LoginServlet extends HttpServlet {
 		if (user != null) {
 
 			session.setAttribute("loginUser", user);
+			session.removeAttribute("errorMessages");
 			response.sendRedirect("./");
 		} else {
 			List<String> messages = new ArrayList<String>();

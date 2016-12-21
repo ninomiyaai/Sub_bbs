@@ -7,7 +7,6 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>ユーザー編集画面</title>
-	<link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h3>ユーザー編集</h3>
